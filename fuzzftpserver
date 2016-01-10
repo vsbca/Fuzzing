@@ -1,0 +1,31 @@
+#!/usr/bin/python
+# A very basic FTP fuzzer
+from ftplib import FTP
+
+def main():
+    ip = '192.168.0.1'    #FTP server IP
+    username = 'anonymous'  #Replace with your FTP server username
+    password = 'anonymous'  ##Replace with your FTP server password
+
+    #Creation of Buffer
+    buf = ["A"]
+    counter = 30
+
+    #List of FTP commands
+    commands = ["ABOR", "ACCT", "ADAT", "ALLO", "APPE", "AUTH", "CCC", "CDUP", "CONF", "CWD", "DELE", "ENC", "EPRT", "EPSV", "FEAT", "HELP", "LANG", "LIST", "LPRT", "LPSV", "MDTM", "MIC", "MKD", "MLSD", "MLST", "MODE", "NLST", "NOOP", "OPTS", "PASV", "PBSZ", "PORT", "PROT", "PWD", "REIN", "REST", "RETR", "RMD", "RNFR", "RNTO", "SITE", "SIZE", "SMNT", "STAT", "STOR", "STOU", "STRU", "SYST", "TYPE", "XCUP", "XMKD", "XPWD", "XRCP", "XRMD", "XRSQ", "XSEM", "XSEN"]
+
+    while len(buf) <= 30:
+        buf.append("A" * counter)
+        counter = counter + 100
+
+    for command in commands:
+        for junk in buf:
+            print ("FTP fuzzing " + command + " with length " + str(len(junk)))
+            print(junk)
+            ftp = FTP(ip)
+            ftp.login()  #for anonymous keep it blank
+            ftp.sendcmd(command+' '+ junk)
+            ftp.close()
+
+if __name__ == '__main__':
+    main()
